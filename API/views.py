@@ -4,9 +4,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from API.models import models, Book
 from API.serializers import BookModelSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 
 
+@permission_classes([IsAuthenticated])
 class GetALLData(APIView):
     def get(self, request):
         query = Book.objects.all().order_by('-create_at')
@@ -15,6 +17,7 @@ class GetALLData(APIView):
 
 
 # Create your views here.
+@permission_classes([IsAuthenticated])
 class GetFavData(APIView):
     def get(self, request):
         query = Book.objects.filter(fav=True)
@@ -22,6 +25,7 @@ class GetFavData(APIView):
         return Response(serializers.data, status=status.HTTP_200_OK)
 
 
+@permission_classes([IsAuthenticated])
 class GetNotFavData(APIView):
     def get(self, request):
         query = Book.objects.filter(fav=False)
@@ -29,6 +33,7 @@ class GetNotFavData(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@permission_classes([IsAdminUser])
 class UpgradeFavData(APIView):
     def get(self, request, pk):
         query = Book.objects.get(pk=pk)
@@ -44,6 +49,7 @@ class UpgradeFavData(APIView):
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@permission_classes([IsAdminUser])
 class PostModelData(APIView):
     def post(self, request):
         serializer = BookModelSerializer(data=request.data)
@@ -58,6 +64,7 @@ class PostModelData(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@permission_classes([IsAdminUser])
 class SearchDdata(APIView):
     def get(self, request):
         search = request.GET['name']
@@ -66,6 +73,7 @@ class SearchDdata(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@permission_classes([IsAdminUser])
 class DeleteData(APIView):
     def delete(self, request, pk):
         query = Book.objects.get(pk=pk)
@@ -73,6 +81,7 @@ class DeleteData(APIView):
         return Response(status == status.HTTP_204_NO_CONTENT)
 
 
+@permission_classes([IsAuthenticated])
 @api_view(['GET'])
 def allApi(request):
     if request.method == 'GET':
@@ -81,6 +90,7 @@ def allApi(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+@permission_classes([IsAdminUser])
 @api_view(['POST'])
 def SetData(request):
     if request.method == "POST":
