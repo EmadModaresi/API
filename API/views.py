@@ -7,7 +7,6 @@ from API.serializers import BookModelSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
 
-
 @permission_classes([IsAuthenticated])
 class GetALLData(APIView):
     def get(self, request):
@@ -65,7 +64,7 @@ class PostModelData(APIView):
 
 
 @permission_classes([IsAdminUser])
-class SearchDdata(APIView):
+class SearchData(APIView):
     def get(self, request):
         search = request.GET['name']
         query = Book.objects.filter(store_name__contains=search)
@@ -101,3 +100,11 @@ def SetData(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         allApi(request)
+
+
+# class UserGetApi(APIView):
+#     def get(self, request, name):
+#         query = Book.objects.filter(store_name = name)
+#         serilaizer = BookModelSerializer(query , many=True)
+#         return Response(serilaizer.data , status = status.HTTP_200_OK)
+#

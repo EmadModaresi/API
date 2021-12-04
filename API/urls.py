@@ -1,5 +1,5 @@
 from django.urls import path
-from API.views import GetALLData, GetFavData, UpgradeFavData, GetNotFavData, PostModelData, SearchDdata, DeleteData, \
+from API.views import GetALLData, GetFavData, UpgradeFavData, GetNotFavData, PostModelData, SearchData, DeleteData, \
     allApi , SetData
 
 urlpatterns = [
@@ -9,8 +9,9 @@ urlpatterns = [
     path('get-not-fav-data/', GetNotFavData.as_view()),
     path('post-model/', PostModelData.as_view()),
     path('post-fun/', SetData),
-    path('search/', SearchDdata.as_view()),
+    path('search/', SearchData.as_view()),
     path('delete/<int:pk>/', DeleteData.as_view()),
     path('updata-fav-data/<int:pk>/', UpgradeFavData.as_view()),
+    # path('find-books/<str:name>/', UserGetApi.as_view()),
 
 ]
